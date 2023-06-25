@@ -47,4 +47,10 @@ public class StudentController {
     public List<StudentDto> getAttendingStudents(@PathVariable int lectureId) {
         return studentRepository.getAttendingStudents(lectureId);
     }
+
+    @GetMapping("/students/exams/passed/{examId}")
+    public List<StudentDto> getPassedStudents(@PathVariable int examId) {
+        return studentRepository.getPassedStudents(examId);
+    }
+
 }

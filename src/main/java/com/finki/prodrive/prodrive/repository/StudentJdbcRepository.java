@@ -179,6 +179,7 @@ public class StudentJdbcRepository {
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
+                    //TODO: Ako ne rabotit vaka mozda vo sledniov red namesto student_username da trebit samo username
                     String studentUsername = rs.getString("student_username");
                     String studentName = rs.getString("name");
                     String studentSurname = rs.getString("surname");
@@ -198,5 +199,37 @@ public class StudentJdbcRepository {
         return attendingStudents;
     }
 
+    public List<StudentDto> getPassedStudents(int examId) {
+        List<StudentDto> passedStudents = new ArrayList<>();
+
+        String sql = "SELECT * FROM get_passed_students(?)";
+
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, examId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+
+                    //TODO: Ako ne rabotit vaka mozda vo sledniov red namesto student_username da trebit samo username
+                    String studentUsername = rs.getString("student_username");
+                    String studentName = rs.getString("name");
+                    String studentSurname = rs.getString("surname");
+
+                    StudentDto student = new StudentDto();
+                    student.setUsername(studentUsername);
+                    student.setName(studentName);
+                    student.setSurname(studentSurname);
+
+                    passedStudents.add(student);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return passedStudents;
+    }
 
 }
