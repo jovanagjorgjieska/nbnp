@@ -144,5 +144,26 @@ public class StudentJdbcRepository {
         return totalStudents;
     }
 
-    // Add other methods as needed, such as getById, insert, update, delete, etc.
+    public double calculateAverageExamScore(String username) {
+        double averageScore = 0.0;
+
+        String sql = "SELECT calculate_average_exam_score(?)";
+
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, username);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    averageScore = rs.getDouble(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return averageScore;
+    }
+
 }

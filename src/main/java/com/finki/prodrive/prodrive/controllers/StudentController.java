@@ -41,4 +41,10 @@ public class StudentController {
         return studentRepository.getTotalStudents();
     }
 
+    @GetMapping("/students/average/{username}")
+    public Double getAverageExamScore(@PathVariable String username) {
+        return studentRepository.calculateAverageExamScore(username);
+    }
+
+
 }
