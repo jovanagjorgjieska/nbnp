@@ -1,11 +1,10 @@
 package com.finki.prodrive.prodrive.controllers;
 
+import com.finki.prodrive.prodrive.model.LectureAttendance;
 import com.finki.prodrive.prodrive.model.Student;
 import com.finki.prodrive.prodrive.model.StudentExamResults;
 import com.finki.prodrive.prodrive.repository.StudentJdbcRepository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,5 +21,11 @@ public class StudentController {
     @GetMapping("/students/exams/{username}")
     public List<StudentExamResults> getStudentExamsResults(@PathVariable String username) {
         return studentRepository.getResultsByUsername(username);
+    }
+
+    @PostMapping("/students/lecture")
+    public void addStudentAttendanceToLecture(@RequestBody LectureAttendance lectureAttendance) {
+        studentRepository.addStudentAttendanceToLecture(lectureAttendance.getLectureId(),
+                lectureAttendance.getStudentUsername(), lectureAttendance.getLectureDate());
     }
 }

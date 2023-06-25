@@ -92,6 +92,21 @@ public class StudentJdbcRepository {
         return results;
     }
 
+    public void addStudentAttendanceToLecture(Integer lectureId, String studentUsername, Timestamp lectureDate) {
+        String sql = "CALL add_student_attendance(?, ?, ?)";
+
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+             CallableStatement stmt = conn.prepareCall(sql)) {
+
+            stmt.setInt(1, lectureId);
+            stmt.setString(2, studentUsername);
+            stmt.setTimestamp(3, lectureDate);
+
+            stmt.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     // Add other methods as needed, such as getById, insert, update, delete, etc.
 }
