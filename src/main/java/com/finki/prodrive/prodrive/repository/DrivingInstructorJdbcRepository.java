@@ -1,7 +1,7 @@
 package com.finki.prodrive.prodrive.repository;
 
 import com.finki.prodrive.prodrive.model.DrivingInstructor;
-import com.finki.prodrive.prodrive.model.Student;
+import com.finki.prodrive.prodrive.model.StudentDto;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -52,5 +52,37 @@ public class DrivingInstructorJdbcRepository {
         }
 
         return instructors;
+    }
+
+    //Returns only the students that were assigned to a particular driving instructor
+    public List<StudentDto> getInstructorsAssignedInstructors(String username) {
+        List<StudentDto> studentDtos = new ArrayList<>();
+
+        String sql = "SELECT * FROM driving_instructor_students WHERE driving_instructor_username = ?";
+
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, username);
+
+            try (ResultSet rs = stmt.executeQuery()){
+                while (rs.next()) {
+                    String studentUsername = rs.getString("student_username");
+                    String name = rs.getString("name");
+                    String surname = rs.getString("surname");
+
+                    StudentDto studentDto = new StudentDto();
+                    studentDto.setUsername(studentUsername);
+                    studentDto.setName(name);
+                    studentDto.setSurname(surname);
+
+                    studentDtos.add(studentDto);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return studentDtos;
     }
 }
