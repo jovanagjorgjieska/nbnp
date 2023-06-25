@@ -1,5 +1,6 @@
 package com.finki.prodrive.prodrive.controllers;
 
+import com.finki.prodrive.prodrive.model.ExamAttendance;
 import com.finki.prodrive.prodrive.model.LectureAttendance;
 import com.finki.prodrive.prodrive.model.Student;
 import com.finki.prodrive.prodrive.model.StudentExamResults;
@@ -27,5 +28,11 @@ public class StudentController {
     public void addStudentAttendanceToLecture(@RequestBody LectureAttendance lectureAttendance) {
         studentRepository.addStudentAttendanceToLecture(lectureAttendance.getLectureId(),
                 lectureAttendance.getStudentUsername(), lectureAttendance.getLectureDate());
+    }
+
+    @PostMapping("/students/exams")
+    public void addStudentAttendanceToExam(@RequestBody ExamAttendance examAttendance) {
+        studentRepository.addStudentAttendanceToExam(examAttendance.getExamId(),
+                examAttendance.getStudentUsername(), examAttendance.getAttemptNumber());
     }
 }
