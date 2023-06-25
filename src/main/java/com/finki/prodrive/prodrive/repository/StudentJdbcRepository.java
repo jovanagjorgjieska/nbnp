@@ -1,6 +1,7 @@
 package com.finki.prodrive.prodrive.repository;
 
 import com.finki.prodrive.prodrive.model.Student;
+import com.finki.prodrive.prodrive.model.StudentDto;
 import com.finki.prodrive.prodrive.model.StudentExamResults;
 
 import java.sql.*;
@@ -165,5 +166,37 @@ public class StudentJdbcRepository {
 
         return averageScore;
     }
+
+    public List<StudentDto> getAttendingStudents(int lectureId) {
+        List<StudentDto> attendingStudents = new ArrayList<>();
+
+        String sql = "SELECT * FROM get_attending_students(?)";
+
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, lectureId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    String studentUsername = rs.getString("student_username");
+                    String studentName = rs.getString("name");
+                    String studentSurname = rs.getString("surname");
+
+                    StudentDto student = new StudentDto();
+                    student.setUsername(studentUsername);
+                    student.setName(studentName);
+                    student.setSurname(studentSurname);
+
+                    attendingStudents.add(student);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return attendingStudents;
+    }
+
 
 }

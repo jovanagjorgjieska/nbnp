@@ -1,9 +1,6 @@
 package com.finki.prodrive.prodrive.controllers;
 
-import com.finki.prodrive.prodrive.model.ExamAttendance;
-import com.finki.prodrive.prodrive.model.LectureAttendance;
-import com.finki.prodrive.prodrive.model.Student;
-import com.finki.prodrive.prodrive.model.StudentExamResults;
+import com.finki.prodrive.prodrive.model.*;
 import com.finki.prodrive.prodrive.repository.StudentJdbcRepository;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,5 +43,8 @@ public class StudentController {
         return studentRepository.calculateAverageExamScore(username);
     }
 
-
+    @GetMapping("/students/lecture/{lectureId}")
+    public List<StudentDto> getAttendingStudents(@PathVariable int lectureId) {
+        return studentRepository.getAttendingStudents(lectureId);
+    }
 }
