@@ -35,4 +35,10 @@ public class StudentController {
         studentRepository.addStudentAttendanceToExam(examAttendance.getExamId(),
                 examAttendance.getStudentUsername(), examAttendance.getAttemptNumber());
     }
+
+    @GetMapping("/students/total")
+    public Integer getTotalStudents() {
+        return studentRepository.getTotalStudents();
+    }
+
 }

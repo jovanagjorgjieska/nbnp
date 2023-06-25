@@ -124,5 +124,25 @@ public class StudentJdbcRepository {
         }
     }
 
+    public int getTotalStudents() {
+        int totalStudents = 0;
+
+        String sql = "SELECT get_total_students()";
+
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            if (rs.next()) {
+                totalStudents = rs.getInt(1);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return totalStudents;
+    }
+
     // Add other methods as needed, such as getById, insert, update, delete, etc.
 }
